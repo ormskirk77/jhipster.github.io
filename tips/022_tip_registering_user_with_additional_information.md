@@ -19,7 +19,7 @@ To illustrate this, let's assume we want to store the user's phone number.
 The best way to add information that is not handled by the default JHipster User is by using composition in a new entity linked to it with a One to One relationship.
 
 After this entity is created, let's call it UserExtra, the best way to handle its id is by mapping it to the JHI_User's one. This way, our UserExtra will have the same id as the User's, accelerating the different requests.
-To achieve this, you will need to use the @MapsId annotation :
+To achieve this, you will need to use the @MapsId and @JoinColumn annotations. The JHipster User id will be stored in the table column that you set. In the case below we are setting it to the "id" column of the UserExtra object but it could be anything you want. 
 
 ```
 public class UserExtra implements Serializable {
@@ -32,6 +32,7 @@ public class UserExtra implements Serializable {
     @Column(name = "phone")
     private String phone;
 
+    @JoinColumn(name="id")
     @OneToOne
     @MapsId
     private User user;
@@ -46,10 +47,10 @@ Note that the @GeneratedValue annotation on the id needs to be removed.
 
 Now that an entity exists to store the phone number, we need to add an input in the register form to ask for the user's phone number.
 
-Nothing easier than that, just update webapp/app/account/register/register.html to add an input field bound to the variable already used to store the basic information (vm.registerAccount) :
+Nothing easier than that, just update webapp/app/account/register/register.html to add an input field bound to the variable already used to store the basic information (registerAccount) :
 
 ```
-<input class="form-control" id="phone" ng-model="vm.registerAccount.phone" placeholder="{{'global.form.phone.placeholder' | translate}}" />
+<input class="form-control" id="phone" ng-model="registerAccount.phone" placeholder="{{'global.form.phone.placeholder' | translate}}" />
 ```
 
 ## Updating ManagedUserVM
